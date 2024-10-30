@@ -1,5 +1,4 @@
 
-
 ### plot time trend of course evaluations
 
 evals <- data.frame("semester" = c("2016", "2016/17", "2017", "2017/18",
@@ -94,7 +93,7 @@ ggplot(data = evals, aes(y = semester,
        from 2018/19 scale 1-6") +
 coord_flip()
 
-dev.copy(png, "out/evalovertime.png",
+dev.copy(png, "evalovertime.png",
          units="px", width=1600, height=1600, res=300)
 dev.off()
 
@@ -134,7 +133,7 @@ ggplot(data = evals, aes(y = semester,
        ab 2018/19: Skala von 1-6") +
   coord_flip()
 
-dev.copy(png, "out/evalovertime_de.png",
+dev.copy(png, "evalovertime_de.png",
          units="px", width=1600, height=1600, res=300)
 dev.off()
 
