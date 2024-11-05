@@ -109,7 +109,6 @@ ggplot(data = evals, aes(y = semester,
   xlab("Globalurteil (1: sehr gut)") + ylab("") +
   geom_path(aes(group = 1), colour = "blue") +
   geom_point() +
-  geom_hline(yintercept = 11.5, color = "grey") +
   geom_errorbarh(data = evals, aes(xmin = worth - worthSD/sqrt(n),
                                    xmax = worth + worthSD/sqrt(n)),
                  colour = "grey") +
