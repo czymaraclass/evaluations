@@ -1,6 +1,7 @@
 
 ### plot time trend of course evaluations
 
+## generate data
 evals <- data.frame("semester" = c("2016", "2016/17", "2017", "2017/18",
                                    # frankfurt
                                    "2018", "2018/19",
@@ -47,6 +48,7 @@ evals$grandmean <- mean(evals$mean, na.rm = T)
 
 evals$worthgrandmean <- mean(evals$worth, na.rm = T)
 
+# load package
 library(ggplot2); theme_set(theme_bw() +
                               theme(axis.line = element_line(colour = "black"),
                                     panel.grid.major = element_blank(),
@@ -57,23 +59,22 @@ library(ggplot2); theme_set(theme_bw() +
                                     axis.ticks = element_line(colour = "black")))
 
 
-# full enlish version
-# win.metafile("C:/Users/czymara.local/PowerFolders/teaching/teachingevaluations/out/evalovertime.wmf")
+## English version
 
 ggplot(data = evals, aes(y = semester,
                          x = mean#,
                          # colour = University
                          )) +
-  geom_errorbarh(aes(xmin = mean - sd,
-                     xmax = mean + sd),
+  geom_errorbarh(aes(xmin = mean - sd/sqrt(n),
+                     xmax = mean + sd/sqrt(n)),
                  colour = "grey") +
   xlab("Overall grade (1: best)") + ylab("") +
   geom_path(aes(group = 1), colour = "blue") +
   # geom_vline(xintercept = evals$grandmean ,
   #           colour = "blue") +
   geom_point() +
-  geom_errorbarh(data = evals, aes(xmin = worth - worthSD,
-                     xmax = worth + worthSD),
+  geom_errorbarh(data = evals, aes(xmin = worth - worthSD/sqrt(n),
+                     xmax = worth + worthSD/sqrt(n)),
                  colour = "grey") +
   scale_x_continuous(limits = c(0, 6.5), breaks = c(1:6),
                      sec.axis = sec_axis(~. , breaks = c(1:6),
@@ -87,32 +88,30 @@ ggplot(data = evals, aes(y = semester,
   theme(axis.text.x = element_text(angle = 90),
         axis.title.y = element_text(color = "blue"),
         axis.title.y.right = element_text(color = "red")) +
-  labs(#title = "Evaluation of my courses",
-       caption = "Means and standard deviations
+  labs(caption = "Mean and standard erorrs of mean
        Overall grade (left y-axis): Until 2018 scale 1-5,
        from 2018/19 scale 1-6") +
 coord_flip()
 
-dev.copy(png, "evalovertime.png",
+dev.copy(png, "out/evalovertime.png",
          units="px", width=1600, height=1600, res=300)
 dev.off()
 
 
-# german version
+## german version
 ggplot(data = evals, aes(y = semester,
                          x = mean#,
                          # colour = University
                          )) +
-  geom_errorbarh(aes(xmin = mean - sd,
-                     xmax = mean + sd),
+  geom_errorbarh(aes(xmin = mean - sd/sqrt(n),
+                     xmax = mean + sd/sqrt(n)),
                  colour = "grey") +
   xlab("Globalurteil (1: sehr gut)") + ylab("") +
- # geom_hline(yintercept = 11.5, color = "grey") +
   geom_path(aes(group = 1), colour = "blue") +
   geom_point() +
   geom_hline(yintercept = 11.5, color = "grey") +
-  geom_errorbarh(data = evals, aes(xmin = worth - worthSD,
-                                   xmax = worth + worthSD),
+  geom_errorbarh(data = evals, aes(xmin = worth - worthSD/sqrt(n),
+                                   xmax = worth + worthSD/sqrt(n)),
                  colour = "grey") +
   scale_x_continuous(limits = c(0, 6.5), breaks = c(1:6),
                      sec.axis = sec_axis(~. , breaks = c(1:6),
@@ -127,14 +126,11 @@ ggplot(data = evals, aes(y = semester,
   theme(axis.text.x = element_text(angle = 90),
         axis.title.y = element_text(color = "blue"),
         axis.title.y.right = element_text(color = "red")) +
-  labs(#title = "Evaluation of my courses",
-    caption = "Mittelwert und Standardabweichung
+  labs(caption = "Mittelwert und Standardfehler des Mittelwerts
        Bis 2018: Skala von 1-5,
        ab 2018/19: Skala von 1-6") +
   coord_flip()
 
-dev.copy(png, "evalovertime_de.png",
+dev.copy(png, "out/evalovertime_de.png",
          units="px", width=1600, height=1600, res=300)
 dev.off()
-
-
